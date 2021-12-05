@@ -10,7 +10,7 @@ class App extends React.Component {
     super(props);
     this.state = {
       budgetMode: false,
-      newBudget: "",
+      newBudget: 2000,
       budgetTotal: 2000,
       inputExpenseName: "",
       inputExpenseCost: "",
@@ -50,7 +50,6 @@ class App extends React.Component {
   switchBudgetMode = () => {
     this.setState({
       budgetMode: true,
-      newBudget: this.state.budgetTotal
     })
   }
 
@@ -61,7 +60,6 @@ class App extends React.Component {
     else {
       this.setState({
         budgetTotal: Number(this.state.newBudget),
-        newBudget: "",
         budgetMode: false
       })
     }
@@ -69,7 +67,7 @@ class App extends React.Component {
 
   cancelNewBudget = () => {
     this.setState({
-      newBudget: "",
+      newBudget: this.state.budgetTotal,
       budgetMode: false
     })
   }
@@ -87,10 +85,11 @@ class App extends React.Component {
     if (deleteConfirm) {
       const name = e.target.parentElement.parentElement.previousElementSibling.innerHTML;
       const cost = Number(e.target.parentElement.previousElementSibling.innerHTML.slice(1));
-      let idx = this.state.expenseList.findIndex((e) => e.name === name && e.cost === cost);
-      this.state.expenseList.splice(idx, 1);
+      const list = [...this.state.expenseList];
+      const idx = list.findIndex((e) => e.name === name && e.cost === cost);
+      list.splice(idx, 1);
       this.setState({
-        expenseList: this.state.expenseList
+        expenseList: list
       });
     }
   }
@@ -105,9 +104,10 @@ class App extends React.Component {
         name: this.state.inputExpenseName,
         cost: Number(this.state.inputExpenseCost)
       };
-      this.state.expenseList.push(newExpense);
+      const list = this.state.expenseList;
+      list.push(newExpense);
       this.setState({
-        expenseList: this.state.expenseList,
+        expenseList: list,
         inputExpenseName: "",
         inputExpenseCost: ""
       });
@@ -127,7 +127,7 @@ class App extends React.Component {
         <ExpenseList searchMode={this.state.searchMode} inputSearch={this.state.inputSearch} expenseList={this.state.expenseList} searchExpense={this.searchExpense} deleteExpense={this.deleteExpense} />
 
         <AddExpense inputExpenseName={this.state.inputExpenseName} inputExpenseCost={this.state.inputExpenseCost} handleChange={this.handleChange} addExpense={this.addExpense} />
-        
+
       </div>
     );
   }
