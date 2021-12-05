@@ -131,6 +131,8 @@ input {
   height: 1.5em;
   font-size: small;
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .expenseCost::before, .expenseCost::after {
